@@ -10,7 +10,8 @@ let stop = false;
 let direction = "down"
 let interval;
 let gOverInterval;
-const speed = 500
+const initialLength = 5;
+let speed = 500
 const width = gameBoard.offsetWidth;
 const height = gameBoard.offsetHeight;
 const gOver = document.querySelector(".game-over")
@@ -35,9 +36,14 @@ function initialise() {
     snakeHead.style.left = headPos[1] + "px";
     clearInterval(interval);
     clearInterval(gOverInterval);
+
     for (let i = 0; i < body.length; i++) {
         const bodyPart = document.querySelector('.part_' + i);
         gameBoard.removeChild(bodyPart)
+    }
+    for (let i = 0; i < initialLength; i++) {
+        body.push([0, 0])
+        addBoddyPart()
     }
 
     body = [];
@@ -88,28 +94,28 @@ function headMove(direction) {
             headPos[0] += headWidth;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
-            //bodyMove(posTransfer)
+
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
         case "up":
             headPos[0] -= headWidth;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
-            //bodyMove(posTransfer)
+
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
         case "left":
             headPos[1] -= headWidth;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
-            //bodyMove(posTransfer)
+
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
         case "right":
             headPos[1] += headWidth;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
-            //bodyMove(posTransfer)
+
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
     }
@@ -137,13 +143,22 @@ function headMove(direction) {
         }
         body.push(swallowedFood.pop())
         grow = false;
-        const newPart = document.createElement('div');
-        newPart.classList.add('body', 'part_' + (body.length - 1));
-        gameBoard.append(newPart);
-        newPart.style.top = body[body.length - 1][0] + "px";
-        newPart.style.left = body[body.length - 1][1] + "px";
+        addBoddyPart();
+        // const newPart = document.createElement('div');
+        // newPart.classList.add('body', 'part_' + (body.length - 1));
+        // gameBoard.append(newPart);
+        // newPart.style.top = body[body.length - 1][0] + "px";
+        // newPart.style.left = body[body.length - 1][1] + "px";
     }
     if (foodPos[0] === headPos[0] && foodPos[1] === headPos[1]) eatFood();
+}
+
+function addBoddyPart() {
+    const newPart = document.createElement('div');
+    newPart.classList.add('body', 'part_' + (body.length - 1));
+    gameBoard.append(newPart);
+    newPart.style.top = body[body.length - 1][0] + "px";
+    newPart.style.left = body[body.length - 1][1] + "px";
 }
 
 function bodyMove(pos) {
