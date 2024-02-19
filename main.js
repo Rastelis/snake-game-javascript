@@ -7,20 +7,28 @@ function rand(min, max) {
 const gameBoard = document.querySelector(".game-board");
 
 let stop = false;
-let direction = "down"
+let direction = "down";
 let interval;
 let gOverInterval;
 const initialLength = 5;
-let speed = 500
-const width = gameBoard.offsetWidth;
-const height = gameBoard.offsetHeight;
-const gOver = document.querySelector(".game-over")
-const snakeHead = document.createElement('div')
+let speed = 250;
+const headSize = 8;
+const boardWidht = 400;
+r = document.querySelector(":root");
+r.style.setProperty("--head-size",headSize + "px");
+r.style.setProperty("--board-width",boardWidht + "px");
+
+//const width = gameBoard.offsetWidth;
+const gOver = document.querySelector(".game-over");
+const snakeHead = document.createElement('div');
 snakeHead.classList.add('snake-head');
 gameBoard.append(snakeHead);
+
+snakeHead.style.width = headSize
+snakeHead.style.height = headSize
 const food = document.querySelector(".food");
-const headWidth = snakeHead.offsetWidth;
-const boardScale = width / headWidth;
+//const headWidth = snakeHead.offsetWidth;
+const boardScale = boardWidht / headSize;
 let headPos = [];
 let foodPos = [];
 let body = [];
@@ -31,7 +39,7 @@ initialise();
 
 function initialise() {
     direction = "down"
-    headPos = [boardScale / 2 * 5, boardScale / 2 * 5];
+    headPos = [boardScale / 2 * headSize, boardScale / 2 * headSize];
     snakeHead.style.top = headPos[0] + "px";
     snakeHead.style.left = headPos[1] + "px";
     clearInterval(interval);
@@ -41,12 +49,11 @@ function initialise() {
         const bodyPart = document.querySelector('.part_' + i);
         gameBoard.removeChild(bodyPart)
     }
+    body = [];
     for (let i = 0; i < initialLength; i++) {
-        body.push([0, 0])
+        body.push([boardScale / 2 * headSize, boardScale / 2 * headSize])
         addBoddyPart()
     }
-
-    body = [];
     grow = false;
     swallowedFood = [];
     gOver.style.display = "none"
@@ -91,38 +98,38 @@ function headMove(direction) {
     let posTransfer = [...headPos];
     switch (direction) {
         case "down":
-            headPos[0] += headWidth;
+            headPos[0] += headSize;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
 
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
         case "up":
-            headPos[0] -= headWidth;
+            headPos[0] -= headSize;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
 
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
         case "left":
-            headPos[1] -= headWidth;
+            headPos[1] -= headSize;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
 
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
         case "right":
-            headPos[1] += headWidth;
+            headPos[1] += headSize;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
 
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
     }
-    if (headPos[0] < 0 || headPos[1] < 0 || headPos[0] > width - headWidth || headPos[1] > width - headWidth) gameOver();
+    if (headPos[0] < 0 || headPos[1] < 0 || headPos[0] > boardWidht - headSize || headPos[1] > boardWidht - headSize) "";/*gameOver();*/
     if (body.length > 1)
         for (let i = 0; i < body.length; i++) {
-            if (body[i][0] == headPos[0] && body[i][1] == headPos[1]) gameOver();
+            if (body[i][0] == headPos[0] && body[i][1] == headPos[1]) "";/*gameOver();*/
             if (swallowedFood.length > 0) {
                 const bodyPart = document.querySelector('.part_' + i);
                 console.log("full-belly");
@@ -191,7 +198,7 @@ function start() {
 }
 
 function generateFood() {
-    foodPos = [rand(0, (boardScale)) * 5, (rand(0, boardScale)) * 5]
+    foodPos = [rand(0, (boardScale-1)) * headSize, (rand(0, boardScale-1)) * headSize]
     // foodPos = [(boardScale / 2 + 5) * 5, boardScale / 2 * 5]
     food.style.top = foodPos[0] + "px"
     food.style.left = foodPos[1] + "px"

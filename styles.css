@@ -1,3 +1,8 @@
+:root {
+    --head-size: 5px;
+    --board-width: 400px;
+}
+
 .wraper {
     padding: 5px;
     background-color: #5e1c1c;
@@ -23,35 +28,37 @@ input {
 
 .game-board {
     background-color: black;
-    width: 400px;
-    height: 400px;
+    width: var(--board-width);
+    height: var(--board-width);
     position: relative;
     /* box-sizing: border-box; */
 }
 
 .snake-head {
-    height: 5px;
-    width: 5px;
+    height: var(--head-size);
+    width: var(--head-size);
     background-color: white;
     position: absolute;
     box-sizing: border-box;
+    z-index: 2;
 }
 
 
 .body {
-    height: 5px;
-    width: 5px;
+    height: var(--head-size);
+    width: var(--head-size);
     background-color: greenyellow;
     position: absolute;
     box-sizing: border-box;
+    z-index: 1;
 }
 .full-belly {
     box-shadow: 0 0 0 1px greenyellow;
 }
 
 .food {
-    height: 5px;
-    width: 5px;
+    height: var(--head-size);
+    width: var(--head-size);
     background-color: black;
     border: 1px solid white;
     position: absolute;
@@ -63,7 +70,7 @@ input {
     color: red;
     font-size: 60px;
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
