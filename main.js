@@ -126,10 +126,10 @@ function headMove(direction) {
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
     }
-    if (headPos[0] < 0 || headPos[1] < 0 || headPos[0] > boardWidht - headSize || headPos[1] > boardWidht - headSize) "";/*gameOver();*/
+    if (headPos[0] < 0 || headPos[1] < 0 || headPos[0] > boardWidht - headSize || headPos[1] > boardWidht - headSize) gameOver();
     if (body.length > 1)
         for (let i = 0; i < body.length; i++) {
-            if (body[i][0] == headPos[0] && body[i][1] == headPos[1]) "";/*gameOver();*/
+            if (body[i][0] == headPos[0] && body[i][1] == headPos[1])   gameOver();
             if (swallowedFood.length > 0) {
                 const bodyPart = document.querySelector('.part_' + i);
                 console.log("full-belly");
@@ -151,11 +151,6 @@ function headMove(direction) {
         body.push(swallowedFood.pop())
         grow = false;
         addBoddyPart();
-        // const newPart = document.createElement('div');
-        // newPart.classList.add('body', 'part_' + (body.length - 1));
-        // gameBoard.append(newPart);
-        // newPart.style.top = body[body.length - 1][0] + "px";
-        // newPart.style.left = body[body.length - 1][1] + "px";
     }
     if (foodPos[0] === headPos[0] && foodPos[1] === headPos[1]) eatFood();
 }
