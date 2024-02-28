@@ -10,13 +10,14 @@ let stop = false;
 let direction = "down";
 let interval;
 let gOverInterval;
+let directionBuffer = direction;
 const initialLength = 5;
 let speed = 250;
 const headSize = 8;
 const boardWidht = 400;
 r = document.querySelector(":root");
-r.style.setProperty("--head-size",headSize + "px");
-r.style.setProperty("--board-width",boardWidht + "px");
+r.style.setProperty("--head-size", headSize + "px");
+r.style.setProperty("--board-width", boardWidht + "px");
 
 //const width = gameBoard.offsetWidth;
 const gOver = document.querySelector(".game-over");
@@ -65,19 +66,19 @@ document.querySelector(".start").addEventListener('click', start)
 document.addEventListener("keydown", event => {
     switch (event.key) {
         case "ArrowLeft":
-            if (direction === "right") break;
+            if (directionBuffer === "right") break;
             direction = "left";
             break;
         case "ArrowRight":
-            if (direction === "left") break;
+            if (directionBuffer === "left") break;
             direction = "right";
             break;
         case "ArrowUp":
-            if (direction === "down") break;
+            if (directionBuffer === "down") break;
             direction = "up";
             break;
         case "ArrowDown":
-            if (direction === "up") break;
+            if (directionBuffer === "up") break;
             direction = "down";
             break;
 
@@ -101,35 +102,32 @@ function headMove(direction) {
             headPos[0] += headSize;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
-
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
         case "up":
             headPos[0] -= headSize;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
-
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
         case "left":
             headPos[1] -= headSize;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
-
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
         case "right":
             headPos[1] += headSize;
             snakeHead.style.top = headPos[0] + "px";
             snakeHead.style.left = headPos[1] + "px";
-
             body.length > 0 ? bodyMove(posTransfer) : "";
             break;
     }
+    directionBuffer = direction;
     if (headPos[0] < 0 || headPos[1] < 0 || headPos[0] > boardWidht - headSize || headPos[1] > boardWidht - headSize) gameOver();
     if (body.length > 1)
         for (let i = 0; i < body.length; i++) {
-            if (body[i][0] == headPos[0] && body[i][1] == headPos[1])   gameOver();
+            if (body[i][0] == headPos[0] && body[i][1] == headPos[1]) gameOver();
             if (swallowedFood.length > 0) {
                 const bodyPart = document.querySelector('.part_' + i);
                 console.log("full-belly");
@@ -193,7 +191,7 @@ function start() {
 }
 
 function generateFood() {
-    foodPos = [rand(0, (boardScale-1)) * headSize, (rand(0, boardScale-1)) * headSize]
+    foodPos = [rand(0, (boardScale - 1)) * headSize, (rand(0, boardScale - 1)) * headSize]
     // foodPos = [(boardScale / 2 + 5) * 5, boardScale / 2 * 5]
     food.style.top = foodPos[0] + "px"
     food.style.left = foodPos[1] + "px"
