@@ -35,10 +35,13 @@ let foodPos = [];
 let body = [];
 let grow = false
 let swallowedFood = [];
+const restartButton = document.querySelector(".restart")
+const startButton = document.querySelector(".start")
 initialise();
 
 
 function initialise() {
+    startButton.disabled = false;
     direction = "down"
     headPos = [boardScale / 2 * headSize, boardScale / 2 * headSize];
     snakeHead.style.top = headPos[0] + "px";
@@ -60,9 +63,8 @@ function initialise() {
     gOver.style.display = "none"
 }
 
-document.querySelector(".restart").addEventListener('click', initialise)
-document.querySelector(".start").addEventListener('click', start)
-
+restartButton.onclick = initialise;
+startButton.onclick = start;
 document.addEventListener("keydown", event => {
     switch (event.key) {
         case "ArrowLeft":
@@ -186,6 +188,7 @@ function eatFood() {
 }
 
 function start() {
+    startButton.disabled = true;
     generateFood();
     interval = setInterval(() => headMove(direction), speed)
 }
